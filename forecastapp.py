@@ -37,7 +37,7 @@ page = st.sidebar.radio("Tabs", tabs)
           suppress_st_warning=True,
           show_spinner=True)
 def load_csv(input):
-    df_input = pd.DataFrame(input)
+    #df_input = pd.DataFrame(input)
     df_input = pd.read_csv(input, sep=None, engine='python', encoding='utf-8',
                            parse_dates=True,
                            infer_datetime_format=True)
