@@ -44,15 +44,5 @@ def load_csv(input):
     return df_input
 
 
-def prep_data(df):
-    df_input = df.rename({date_col: "ds", metric_col: "y"}, errors='raise', axis=1)
-    st.markdown("The selected date column is now labeled as **ds** and the values columns as **y**")
-    df_input = df_input[['ds', 'y']]
-    df_input = df_input.sort_values(by='ds', ascending=True)
-    return df_input
 
-df = prep_data(df)                     
-st.dataframe(df)
-
-st.write(df.describe())
 
