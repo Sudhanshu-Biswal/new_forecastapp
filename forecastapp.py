@@ -84,20 +84,21 @@ future['cap']=cap
 future['floor']=floor
                
 
-try:     
+try:
     df_cv = cross_validation(m, initial=initial,
         period=period, 
         horizon = horizon,
         parallel="processes")
 except:
-    df_cv = cross_validation(m, initial=initial,
-        period=period, 
-        horizon = horizon,
-        parallel="threads")
-except:
-    st.write("Invalid configuration")    
-    df_p = performance_metrics(df_cv)
-    st.dataframe(df_p)
+    try:
+        df_cv = cross_validation(m, initial=initial,
+            period=period, 
+            horizon = horizon,
+            parallel="threads")
+    except:
+        st.write("Invalid configuration")    
+df_p = performance_metrics(df_cv)
+st.dataframe(df_p)
 
 metrics = ['mse','rmse','mae','mape','mdape','coverage']
 
