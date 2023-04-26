@@ -52,12 +52,12 @@ def prep_data(df):
     return df_input
 
                      
-st.dataframe(df)
+st.dataframe(df_input)
 
-st.write(df.describe())
+st.write(df_input.describe())
 
 try:
-    line_chart = alt.Chart(df).mark_line().encode(
+    line_chart = alt.Chart(df_input).mark_line().encode(
     x = 'ds:T',
     y = "y:Q").properties(title="Time series preview").interactive()
     st.altair_chart(line_chart,use_container_width=True)
