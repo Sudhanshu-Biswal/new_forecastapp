@@ -50,6 +50,9 @@ def prep_data(df):
     df_input = df_input.sort_values(by='ds', ascending=True)
     return df_input
 
-                    
+st.dataframe(df)
+
+st.write(df.describe())
+
 
 
