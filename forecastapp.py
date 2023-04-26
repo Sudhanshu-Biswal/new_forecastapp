@@ -1,16 +1,17 @@
+import io, os, sys, setuptools, tokenize
 import streamlit as st
 from streamlit import caching
 import pandas as pd
 import numpy as np
 
-import pystan
-from fbprophet import Prophet
-from fbprophet.plot import add_changepoints_to_plot
-from fbprophet.diagnostics import cross_validation
-from fbprophet.diagnostics import performance_metrics
-from fbprophet.plot import plot_cross_validation_metric
+#import pystan
+from prophet import Prophet
+from prophet.plot import add_changepoints_to_plot
+from prophet.diagnostics import cross_validation
+from prophet.diagnostics import performance_metrics
+from prophet.plot import plot_cross_validation_metric
 import json
-from fbprophet.serialize import model_to_json, model_from_json
+from prophet.serialize import model_to_json, model_from_json
 import holidays
 
 import altair as alt
@@ -50,8 +51,7 @@ def prep_data(df):
     df_input = df_input.sort_values(by='ds', ascending=True)
     return df_input
 
-
-code1 = """                       
+                     
 st.dataframe(df)
 
 st.write(df.describe())
@@ -62,8 +62,8 @@ try:
     y = "y:Q").properties(title="Time series preview").interactive()
         st.altair_chart(line_chart,use_container_width=True)
 except:
-    st.line_chart(df['y'],use_container_width =True,height = 300) """
-code2 = """
+    st.line_chart(df['y'],use_container_width =True,height = 300)
+
  m = Prophet(
     seasonality_mode=seasonality,
     daily_seasonality=daily,
@@ -82,9 +82,8 @@ m = m.fit(df)
 future = m.make_future_dataframe(periods=periods_input,freq='D')
 future['cap']=cap
 future['floor']=floor
-                """
+               
 
-code3 = """
 try:     
     df_cv = cross_validation(m, initial=initial,
         period=period, 
@@ -106,8 +105,7 @@ selected_metric = st.radio(label='Plot metric',options=metrics)
 st.write(selected_metric)
 fig4 = plot_cross_validation_metric(df_cv, metric=selected_metric)
 st.write(fig4)
-"""
-code4 = """
+
 param_grid = {  
             'changepoint_prior_scale': [0.01, 0.1, 0.5],
             'seasonality_prior_scale': [0.1, 1.0, 10.0],
@@ -119,13 +117,13 @@ rmses = []  # Store the RMSEs for each params here
 
 # Use cross validation to evaluate all parameters
 for params in all_params:
-m = Prophet(**params).fit(df)  # Fit model with given params
-df_cv = cross_validation(m, initial=initial,
-                                period=period,
-                                horizon=horizon,
-                                parallel="processes")
-df_p = performance_metrics(df_cv, rolling_window=1)
-rmses.append(df_p['rmse'].values[0])
+  m = Prophet(**params).fit(df)  # Fit model with given params
+  df_cv = cross_validation(m, initial=initial,
+                                  period=period,
+                                  horizon=horizon,
+                                  parallel="processes")
+  df_p = performance_metrics(df_cv, rolling_window=1)
+  rmses.append(df_p['rmse'].values[0])
 
 # Find the best parameters
 tuning_results = pd.DataFrame(all_params)
@@ -136,7 +134,7 @@ best_params = all_params[np.argmin(rmses)]
 st.write('The best parameter combination is:')
 st.write(f"Changepoint prior scale: ** {best_params[0]} ** ")
 st.write(f"Seasonality prior scale: ** {best_params[1]} ** ")
-                        """
+                        
 
 code_options = ["Dataframe information", "Model fitting", "Cross validation", "Hyperparam tuning"]
 
@@ -532,7 +530,7 @@ if page == "Application":
                             st.write(export_forecast.head())
                             export_forecast = export_forecast.to_csv(decimal=',')
                             b64 = base64.b64encode(export_forecast.encode()).decode()
-                            href = f'<a href="data:file/csv;base64,{b64}">Download CSV File</a> (click > **forecast.csv**)'
+                            href = f'<a href="data:file/csv;base64,{b64}">Download CSV File</a> (click >  **forecast.csv**)'
                             st.markdown(href, unsafe_allow_html=True)
 
                 with col2:
@@ -541,7 +539,7 @@ if page == "Application":
                         try:
                             df_p = df_p.to_csv(decimal=',')
                             b64 = base64.b64encode(df_p.encode()).decode()
-                            href = f'<a href="data:file/csv;base64,{b64}">Download CSV File</a> (click  > **metrics.csv**)'
+                            href = f'<a href="data:file/csv;base64,{b64}">Download CSV File</a> (click > **metrics.csv**)'
                             st.markdown(href, unsafe_allow_html=True)
                         except:
                             st.write("No metrics to export")
