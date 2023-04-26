@@ -51,7 +51,7 @@ def prep_data(df):
     df_input = df_input.sort_values(by='ds', ascending=True)
     return df_input
 
-df = load_csv()
+df = load_csv(input)
 df = prep_data(df)                     
 st.dataframe(df)
 
