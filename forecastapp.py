@@ -64,7 +64,7 @@ try:
 except:
     st.line_chart(df['y'],use_container_width =True,height = 300)
 
- m = Prophet(
+m = Prophet(
     seasonality_mode=seasonality,
     daily_seasonality=daily,
     weekly_seasonality=weekly,
