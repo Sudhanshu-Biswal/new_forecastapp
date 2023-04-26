@@ -51,13 +51,14 @@ def prep_data(df):
     df_input = df_input.sort_values(by='ds', ascending=True)
     return df_input
 
-                     
-st.dataframe(df_input)
+df = load_csv()
+df = prep_data(df)                     
+st.dataframe(df)
 
-st.write(df_input.describe())
+st.write(df.describe())
 
 try:
-    line_chart = alt.Chart(df_input).mark_line().encode(
+    line_chart = alt.Chart(df).mark_line().encode(
     x = 'ds:T',
     y = "y:Q").properties(title="Time series preview").interactive()
     st.altair_chart(line_chart,use_container_width=True)
