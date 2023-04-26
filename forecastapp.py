@@ -51,8 +51,8 @@ def prep_data(df):
     return df_input
 
                     
-st.dataframe(df_input)
+st.dataframe(df)
 
-st.write(df_input.describe())
+st.write(df.describe())
 
 
